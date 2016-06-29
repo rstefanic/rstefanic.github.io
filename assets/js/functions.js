@@ -1,19 +1,10 @@
-var $overlay = $('<div id="overlay"></div>');
-var $image = $('<img>');
-var $caption = $('<p></p>');
-
-//Create the overlay, append it to the overlay and body
-$overlay.append($image);
-$overlay.append($caption);
-$("body").append($overlay);
-
 function getImgs(setID) {
   var URL = "https://api.flickr.com/services/rest/" + //secure API request
     "?method=flickr.photosets.getPhotos" +  // method
     "&api_key=c2cd90d25f639c4a6bea9bbb0e0fa39b" + // api key
     "&photoset_id=" + setID + // album name
     "&privacy_filter=1" +
-    "&per_page=20" + // how many pictures
+    "&per_page=100" + // how many pictures
     "&format=json&nojsoncallback=1";
 
   $.getJSON(URL, function(data){
@@ -24,7 +15,7 @@ function getImgs(setID) {
       var img_full = "http://farm" + item.farm + ".static.flickr.com/" + item.server + "/" + item.id + "_" + item.secret + "_h.jpg";
       //build the thumbnail
       var img = $("<a>").attr("href", img_full).attr("target", "_blank");
-      var img_thumb = $("<img/>").attr("src", img_src).css("margin", "8px");
+      var img_thumb = $("<img/>").attr("src", img_src).addClass("spotlight").css("margin", "8px");
       $(img).html(img_thumb);
       $(img).appendTo("#flickr-images");
     });
@@ -40,8 +31,7 @@ $( document ).ready(function() {
     album = $(this).text();
     switch(album) {
       case "Iceland":
-      $('#flickr-images').html("<h2>Leaving on June 29th. Pictures" +
-        " coming soon.</h2>");
+      getImgs("72157669367596230");
         break;
       case "China":
         getImgs("72157669186566650");
@@ -57,22 +47,4 @@ $( document ).ready(function() {
         break;
     }
   }); // end click
-
-// Click on image, blow it up (spotlight)
-  $("#flickr-images a").click(function( event ) {
-    console.log("Hi");
-    event.preventDefault();
-
-    var imageLocation = $(this).attr("href");
-    $image.attr("src", imageLocation);
-    console.log($image);
-
-    $overlay.show();
-  }) ; // end spotlight
-
-// If the image is up, click the overlay to hide it
-  $overlay.click(function() {
-    $overlay.hide();
-  });
-
 }); // end ready
