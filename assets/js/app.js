@@ -47,4 +47,44 @@ $( document ).ready(function() {
         break;
     }
   }); // end click
+
+  $("#skills").click(function(){
+    $("html, body").animate({
+        scrollTop: $(".skills").offset().top
+      }, 1000);
+  });
+
+$("#projects").click(function(){
+  $("html, body").animate({
+      scrollTop: $(".projects").offset().top
+    }, 1000);
+});
+
+$("#about").click(function(){
+  $("html, body").animate({
+      scrollTop: $(".about").offset().top
+    }, 1000);
+});
+
+$("#contacts").click(function(){
+  $("html, body").animate({
+      scrollTop: $(".contact").offset().top
+    }, 1000);
+});
+
+
+$(window).scroll(function(){
+  if ($(this).scrollTop() > 400) {
+    $('.scrollToTop').fadeIn();
+  } else {
+    $('.scrollToTop').fadeOut();
+  }
+});
+
+//Click event to scroll to top
+$('.scrollToTop').click(function(){
+  $('html, body').animate({scrollTop : 0},800);
+  return false;
+});
+
 }); // end ready
