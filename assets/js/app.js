@@ -48,9 +48,9 @@ $( document ).ready(function() {
     }
   }); // end click
 
-  $("#skills").click(function(){
+  $("#tools").click(function(){
     $("html, body").animate({
-        scrollTop: $(".skills").offset().top
+        scrollTop: $(".tools").offset().top
       }, 1000);
   });
 
