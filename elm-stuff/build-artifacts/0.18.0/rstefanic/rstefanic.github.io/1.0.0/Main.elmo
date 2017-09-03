@@ -1,0 +1,374 @@
+var _rstefanic$rstefanic.github.io$Main$pageNotFound = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('main'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html$text('404 -- Page not found'),
+		_1: {ctor: '[]'}
+	});
+var _rstefanic$rstefanic.github.io$Main$photography = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('main'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_evancz$elm_markdown$Markdown$toHtml,
+			{ctor: '[]'},
+			'# Photography'),
+		_1: {ctor: '[]'}
+	});
+var _rstefanic$rstefanic.github.io$Main$blog = function (postId) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('main'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				A2(_elm_lang$core$Basics_ops['++'], 'This is the blog. Post Number: ', postId)),
+			_1: {ctor: '[]'}
+		});
+};
+var _rstefanic$rstefanic.github.io$Main$about = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('main'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$img,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('me'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$src('./images/me.jpg'),
+					_1: {ctor: '[]'}
+				}
+			},
+			{ctor: '[]'}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$p,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('My passions '),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
+var _rstefanic$rstefanic.github.io$Main$home = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('main'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$h2,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Welcome'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$p,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('This is the Homepage'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
+var _rstefanic$rstefanic.github.io$Main$link = F2(
+	function (url, linkText) {
+		return A2(
+			_elm_lang$html$Html$a,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href(url),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(linkText),
+				_1: {ctor: '[]'}
+			});
+	});
+var _rstefanic$rstefanic.github.io$Main$hero = A2(
+	_elm_lang$html$Html$header,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$h1,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Robert Stefanic'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$nav,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$ul,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$li,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(_rstefanic$rstefanic.github.io$Main$link, '#/home', 'Home'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$li,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(_rstefanic$rstefanic.github.io$Main$link, '#/about', 'About'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$li,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(_rstefanic$rstefanic.github.io$Main$link, '#/blog/0', 'Blog'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$li,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(_rstefanic$rstefanic.github.io$Main$link, '#/photography', 'Photography'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
+var _rstefanic$rstefanic.github.io$Main$update = F2(
+	function (msg, state) {
+		var _p0 = msg;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				state,
+				{currentRoute: _p0._0}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _rstefanic$rstefanic.github.io$Main$toUrl = function (currentRoute) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'/',
+		A2(
+			_elm_lang$core$String$join,
+			'/',
+			{
+				ctor: '::',
+				_0: _elm_lang$core$Basics$toString(currentRoute),
+				_1: {ctor: '[]'}
+			}));
+};
+var _rstefanic$rstefanic.github.io$Main$subscriptions = function (_p1) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _rstefanic$rstefanic.github.io$Main$init = function (loc) {
+	return {
+		ctor: '_Tuple2',
+		_0: {currentRoute: loc},
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+};
+var _rstefanic$rstefanic.github.io$Main$State = function (a) {
+	return {currentRoute: a};
+};
+var _rstefanic$rstefanic.github.io$Main$RouteNotFound = {ctor: 'RouteNotFound'};
+var _rstefanic$rstefanic.github.io$Main$Photography = {ctor: 'Photography'};
+var _rstefanic$rstefanic.github.io$Main$Blog = function (a) {
+	return {ctor: 'Blog', _0: a};
+};
+var _rstefanic$rstefanic.github.io$Main$About = {ctor: 'About'};
+var _rstefanic$rstefanic.github.io$Main$Home = {ctor: 'Home'};
+var _rstefanic$rstefanic.github.io$Main$DefaultRoute = {ctor: 'DefaultRoute'};
+var _rstefanic$rstefanic.github.io$Main$fromUrl = function (url) {
+	var urlList = A2(
+		_elm_lang$core$List$drop,
+		1,
+		A2(_elm_lang$core$String$split, '/', url));
+	var _p2 = urlList;
+	_v1_5:
+	do {
+		if (_p2.ctor === '[]') {
+			return _rstefanic$rstefanic.github.io$Main$DefaultRoute;
+		} else {
+			if (_p2._1.ctor === '::') {
+				if ((_p2._0 === 'blog') && (_p2._1._1.ctor === '[]')) {
+					return _rstefanic$rstefanic.github.io$Main$Blog(_p2._1._0);
+				} else {
+					break _v1_5;
+				}
+			} else {
+				switch (_p2._0) {
+					case 'home':
+						return _rstefanic$rstefanic.github.io$Main$Home;
+					case 'about':
+						return _rstefanic$rstefanic.github.io$Main$About;
+					case 'photography':
+						return _rstefanic$rstefanic.github.io$Main$Photography;
+					default:
+						break _v1_5;
+				}
+			}
+		}
+	} while(false);
+	return _rstefanic$rstefanic.github.io$Main$RouteNotFound;
+};
+var _rstefanic$rstefanic.github.io$Main$pageBody = function (state) {
+	var _p3 = _rstefanic$rstefanic.github.io$Main$fromUrl(state.currentRoute.hash);
+	switch (_p3.ctor) {
+		case 'DefaultRoute':
+			return _rstefanic$rstefanic.github.io$Main$home;
+		case 'Home':
+			return _rstefanic$rstefanic.github.io$Main$home;
+		case 'About':
+			return _rstefanic$rstefanic.github.io$Main$about;
+		case 'Blog':
+			return _rstefanic$rstefanic.github.io$Main$blog(_p3._0);
+		case 'Photography':
+			return _rstefanic$rstefanic.github.io$Main$photography;
+		default:
+			return _rstefanic$rstefanic.github.io$Main$pageNotFound;
+	}
+};
+var _rstefanic$rstefanic.github.io$Main$view = function (state) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('wrapper'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A3(
+						_elm_lang$html$Html$node,
+						'link',
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$rel('stylesheet'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$href('styles.css'),
+								_1: {ctor: '[]'}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: _rstefanic$rstefanic.github.io$Main$hero,
+						_1: {
+							ctor: '::',
+							_0: _rstefanic$rstefanic.github.io$Main$pageBody(state),
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('push'),
+						_1: {ctor: '[]'}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('footer'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Ⓒ Robert Stefanic 2017'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(_rstefanic$rstefanic.github.io$Main$link, 'https://github.com/rstefanic/rstefanic.github.io', 'View Source'),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _rstefanic$rstefanic.github.io$Main$UrlChange = function (a) {
+	return {ctor: 'UrlChange', _0: a};
+};
+var _rstefanic$rstefanic.github.io$Main$main = A2(
+	_elm_lang$navigation$Navigation$program,
+	_rstefanic$rstefanic.github.io$Main$UrlChange,
+	{init: _rstefanic$rstefanic.github.io$Main$init, update: _rstefanic$rstefanic.github.io$Main$update, view: _rstefanic$rstefanic.github.io$Main$view, subscriptions: _rstefanic$rstefanic.github.io$Main$subscriptions})();
