@@ -37,8 +37,7 @@ ul {
 ul li {
   background: #fff;
   border-radius: .2em;
-  border: solid 2px rgba(88, 183, 205, .2);
-  border-bottom: solid 2px rgba(88, 183, 205, .2);
+  border: solid 2px steelblue;
   position: relative;
 }
 ul li a {
@@ -56,12 +55,21 @@ header ul li:hover {
 ul li:hover {
   border: solid 2px #333333;
 }
+nav {
+  margin-top: 4.25em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 3000;
+}
 header {
   text-align: center;
   background: linear-gradient(90deg, #d4eece, #55b3d0, #1e7eb7),
               url('./images/header-bg.jpg') no-repeat;
               background-blend-mode: overlay;    
               background-size: cover;   
+  z-index: 1;
 }
 li span {
   color: #707070;

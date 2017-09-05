@@ -1,7 +1,11 @@
-var _rstefanic$rstefanic$Types$BlogPost = F2(
-	function (a, b) {
-		return {postId: a, content: b};
+var _rstefanic$rstefanic$Types$BlogPost = F3(
+	function (a, b, c) {
+		return {postId: a, title: b, content: c};
 	});
+var _rstefanic$rstefanic$Types$GetBlogPosts = function (a) {
+	return {ctor: 'GetBlogPosts', _0: a};
+};
+var _rstefanic$rstefanic$Types$FetchPosts = {ctor: 'FetchPosts'};
 var _rstefanic$rstefanic$Types$UrlChange = function (a) {
 	return {ctor: 'UrlChange', _0: a};
 };

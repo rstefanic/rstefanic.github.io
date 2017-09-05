@@ -6,6 +6,9 @@ import Html.Events     exposing (..)
 import List            exposing (..)
 import Navigation      exposing (..)
 import Markdown        exposing (..)
+import Json.Decode     exposing (Decoder, int, string, map3, at)
+import Http            exposing (..)
+
 
 import Types           exposing (..)
 import Home            exposing (home)
@@ -27,7 +30,11 @@ main =
 
 init : Navigation.Location -> (State, Cmd Msg)
 init loc =
-  ({ currentRoute = loc }, Cmd.none)
+  ({ currentRoute = loc
+   , content = ""
+   , postId = ""
+   , title = "test"
+   }, Cmd.none)
     
 -- SUBSCRIPTION
 
@@ -39,6 +46,9 @@ subscriptions _ =
 
 type alias State = 
   { currentRoute : Navigation.Location
+  , postId       : PostId
+  , title        : Title
+  , content      : Content
   }
 
 -- ROUTING 
@@ -53,7 +63,7 @@ fromUrl url =
       []                 -> DefaultRoute
       [ "home" ]         -> Home
       [ "about" ]        -> About
-      [ "blog", postId ] -> Blog { postId = postId, content = "" }
+      [ "blog", postId ] -> Blog postId
       [ "photography" ]  -> Photography
       _                  -> RouteNotFound 
 
@@ -63,12 +73,48 @@ toUrl currentRoute =
   
 -- UPDATE
 
+allPosts = "../blog/posts.json"
+
+postDecoder : Decoder BlogPost
+postDecoder =
+    Json.Decode.map3 BlogPost
+        (at ["postId"] string)
+        (at ["title"] string)
+        (at ["content"] string)
+           
+requestPosts : Request BlogPost
+requestPosts =
+    Http.get allPosts postDecoder
+        
+fetchPosts =
+    Http.send GetBlogPosts requestPosts
+
+
 update : Msg -> State -> ( State, Cmd Msg )
 update msg state =
     case msg of
         UrlChange location ->
             ({ state | currentRoute = location }, Cmd.none)
+                |> \(x, _) -> update FetchPosts x
 
+        FetchPosts ->
+            (state, fetchPosts)
+
+        GetBlogPosts (Ok blog) ->
+            ( { state |
+                postId = blog.postId
+              , content = blog.content
+              , title = blog.title
+              }, Cmd.none)
+
+        GetBlogPosts (Err (BadStatus x)) ->
+            ({ state | title = (toString x) }, Cmd.none)
+
+        GetBlogPosts (Err (BadPayload y x)) ->
+            ({ state | title = (toString y) }, Cmd.none)
+
+        GetBlogPosts (Err _) ->
+            (state, Cmd.none)
 
 -- VIEW
 
@@ -78,7 +124,7 @@ pageBody state =
       DefaultRoute  -> home
       Home          -> home
       About         -> about
-      Blog blogPost -> blog blogPost
+      Blog blogPost -> blog blogPost state.title
       Photography   -> photography
       RouteNotFound -> pageNotFound
 
@@ -103,7 +149,7 @@ link url linkText =
 
 hero : Html Msg
 hero = 
-  header []
+  Html.header []
     [ h1 [] [ text "Robert Stefanic" ] 
     , nav [] 
        [ ul [] 

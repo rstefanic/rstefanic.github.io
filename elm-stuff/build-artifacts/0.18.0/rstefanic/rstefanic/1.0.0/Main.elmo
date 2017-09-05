@@ -113,16 +113,91 @@ var _rstefanic$rstefanic$Main$hero = A2(
 			_1: {ctor: '[]'}
 		}
 	});
+var _rstefanic$rstefanic$Main$postDecoder = A4(
+	_elm_lang$core$Json_Decode$map3,
+	_rstefanic$rstefanic$Types$BlogPost,
+	A2(
+		_elm_lang$core$Json_Decode$at,
+		{
+			ctor: '::',
+			_0: 'postId',
+			_1: {ctor: '[]'}
+		},
+		_elm_lang$core$Json_Decode$string),
+	A2(
+		_elm_lang$core$Json_Decode$at,
+		{
+			ctor: '::',
+			_0: 'title',
+			_1: {ctor: '[]'}
+		},
+		_elm_lang$core$Json_Decode$string),
+	A2(
+		_elm_lang$core$Json_Decode$at,
+		{
+			ctor: '::',
+			_0: 'content',
+			_1: {ctor: '[]'}
+		},
+		_elm_lang$core$Json_Decode$string));
+var _rstefanic$rstefanic$Main$allPosts = '../blog/posts.json';
+var _rstefanic$rstefanic$Main$requestPosts = A2(_elm_lang$http$Http$get, _rstefanic$rstefanic$Main$allPosts, _rstefanic$rstefanic$Main$postDecoder);
+var _rstefanic$rstefanic$Main$fetchPosts = A2(_elm_lang$http$Http$send, _rstefanic$rstefanic$Types$GetBlogPosts, _rstefanic$rstefanic$Main$requestPosts);
 var _rstefanic$rstefanic$Main$update = F2(
 	function (msg, state) {
 		var _p0 = msg;
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				state,
-				{currentRoute: _p0._0}),
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
+		switch (_p0.ctor) {
+			case 'UrlChange':
+				return function (_p1) {
+					var _p2 = _p1;
+					return A2(_rstefanic$rstefanic$Main$update, _rstefanic$rstefanic$Types$FetchPosts, _p2._0);
+				}(
+					{
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							state,
+							{currentRoute: _p0._0}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					});
+			case 'FetchPosts':
+				return {ctor: '_Tuple2', _0: state, _1: _rstefanic$rstefanic$Main$fetchPosts};
+			default:
+				if (_p0._0.ctor === 'Ok') {
+					var _p3 = _p0._0._0;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							state,
+							{postId: _p3.postId, content: _p3.content, title: _p3.title}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					switch (_p0._0._0.ctor) {
+						case 'BadStatus':
+							return {
+								ctor: '_Tuple2',
+								_0: _elm_lang$core$Native_Utils.update(
+									state,
+									{
+										title: _elm_lang$core$Basics$toString(_p0._0._0._0)
+									}),
+								_1: _elm_lang$core$Platform_Cmd$none
+							};
+						case 'BadPayload':
+							return {
+								ctor: '_Tuple2',
+								_0: _elm_lang$core$Native_Utils.update(
+									state,
+									{
+										title: _elm_lang$core$Basics$toString(_p0._0._0._0)
+									}),
+								_1: _elm_lang$core$Platform_Cmd$none
+							};
+						default:
+							return {ctor: '_Tuple2', _0: state, _1: _elm_lang$core$Platform_Cmd$none};
+					}
+				}
+		}
 	});
 var _rstefanic$rstefanic$Main$toUrl = function (currentRoute) {
 	return A2(
@@ -142,21 +217,20 @@ var _rstefanic$rstefanic$Main$fromUrl = function (url) {
 		_elm_lang$core$List$drop,
 		1,
 		A2(_elm_lang$core$String$split, '/', url));
-	var _p1 = urlList;
-	_v1_5:
+	var _p4 = urlList;
+	_v2_5:
 	do {
-		if (_p1.ctor === '[]') {
+		if (_p4.ctor === '[]') {
 			return _rstefanic$rstefanic$Types$DefaultRoute;
 		} else {
-			if (_p1._1.ctor === '::') {
-				if ((_p1._0 === 'blog') && (_p1._1._1.ctor === '[]')) {
-					return _rstefanic$rstefanic$Types$Blog(
-						{postId: _p1._1._0, content: ''});
+			if (_p4._1.ctor === '::') {
+				if ((_p4._0 === 'blog') && (_p4._1._1.ctor === '[]')) {
+					return _rstefanic$rstefanic$Types$Blog(_p4._1._0);
 				} else {
-					break _v1_5;
+					break _v2_5;
 				}
 			} else {
-				switch (_p1._0) {
+				switch (_p4._0) {
 					case 'home':
 						return _rstefanic$rstefanic$Types$Home;
 					case 'about':
@@ -164,7 +238,7 @@ var _rstefanic$rstefanic$Main$fromUrl = function (url) {
 					case 'photography':
 						return _rstefanic$rstefanic$Types$Photography;
 					default:
-						break _v1_5;
+						break _v2_5;
 				}
 			}
 		}
@@ -172,8 +246,8 @@ var _rstefanic$rstefanic$Main$fromUrl = function (url) {
 	return _rstefanic$rstefanic$Types$RouteNotFound;
 };
 var _rstefanic$rstefanic$Main$pageBody = function (state) {
-	var _p2 = _rstefanic$rstefanic$Main$fromUrl(state.currentRoute.hash);
-	switch (_p2.ctor) {
+	var _p5 = _rstefanic$rstefanic$Main$fromUrl(state.currentRoute.hash);
+	switch (_p5.ctor) {
 		case 'DefaultRoute':
 			return _rstefanic$rstefanic$Home$home;
 		case 'Home':
@@ -181,7 +255,7 @@ var _rstefanic$rstefanic$Main$pageBody = function (state) {
 		case 'About':
 			return _rstefanic$rstefanic$About$about;
 		case 'Blog':
-			return _rstefanic$rstefanic$Blog$blog(_p2._0);
+			return A2(_rstefanic$rstefanic$Blog$blog, _p5._0, state.title);
 		case 'Photography':
 			return _rstefanic$rstefanic$Main$photography;
 		default:
@@ -266,13 +340,13 @@ var _rstefanic$rstefanic$Main$view = function (state) {
 			}
 		});
 };
-var _rstefanic$rstefanic$Main$subscriptions = function (_p3) {
+var _rstefanic$rstefanic$Main$subscriptions = function (_p6) {
 	return _elm_lang$core$Platform_Sub$none;
 };
 var _rstefanic$rstefanic$Main$init = function (loc) {
 	return {
 		ctor: '_Tuple2',
-		_0: {currentRoute: loc},
+		_0: {currentRoute: loc, content: '', postId: '', title: 'test'},
 		_1: _elm_lang$core$Platform_Cmd$none
 	};
 };
@@ -280,6 +354,7 @@ var _rstefanic$rstefanic$Main$main = A2(
 	_elm_lang$navigation$Navigation$program,
 	_rstefanic$rstefanic$Types$UrlChange,
 	{init: _rstefanic$rstefanic$Main$init, update: _rstefanic$rstefanic$Main$update, view: _rstefanic$rstefanic$Main$view, subscriptions: _rstefanic$rstefanic$Main$subscriptions})();
-var _rstefanic$rstefanic$Main$State = function (a) {
-	return {currentRoute: a};
-};
+var _rstefanic$rstefanic$Main$State = F4(
+	function (a, b, c, d) {
+		return {currentRoute: a, postId: b, title: c, content: d};
+	});
