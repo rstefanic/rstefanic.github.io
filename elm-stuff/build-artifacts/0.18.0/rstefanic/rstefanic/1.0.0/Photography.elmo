@@ -1,0 +1,171 @@
+var _rstefanic$rstefanic$Photography$photography = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('main'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$h2,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'textAlign', _1: 'center'},
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Photography'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$p,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('I like to pretend that I\'m a photographer. I '),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('enjoy photographing natural landscapes, '),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('cityscapes, and graffiti. Some of my pictures '),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('are here below.'),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$img,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('photograph'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$src('https://farm9.staticflickr.com/8828/28222281662_dcf0067290_z.jpg'),
+							_1: {ctor: '[]'}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$img,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('photograph'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$src('https://farm8.staticflickr.com/7567/28291899826_8d40320d39_z.jpg'),
+								_1: {ctor: '[]'}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$img,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('photograph'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$src('https://farm8.staticflickr.com/7317/28124163426_c4e69f8a0f_z.jpg'),
+									_1: {ctor: '[]'}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$img,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('photograph'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$src('https://farm8.staticflickr.com/7282/27766804562_21e4b56865_z.jpg'),
+										_1: {ctor: '[]'}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$img,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('photograph'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$src('https://farm8.staticflickr.com/7187/27867669395_0ae9232513_z.jpg'),
+											_1: {ctor: '[]'}
+										}
+									},
+									{ctor: '[]'}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$img,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('photograph'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$src('https://farm8.staticflickr.com/7574/27256235193_7e330336d2_z.jpg'),
+												_1: {ctor: '[]'}
+											}
+										},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$img,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('photograph'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$src('https://farm8.staticflickr.com/7495/27256224734_7176603d91_z.jpg'),
+													_1: {ctor: '[]'}
+												}
+											},
+											{ctor: '[]'}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$img,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('photograph'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$src('https://farm8.staticflickr.com/7274/27912249392_35b82b8459_z.jpg'),
+														_1: {ctor: '[]'}
+													}
+												},
+												{ctor: '[]'}),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
