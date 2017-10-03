@@ -114,7 +114,7 @@ view state =
     , div [ class "push" ] []
     , div [ class "footer" ] 
       [ p [] [ text "Ⓒ Robert Stefanic 2017" ]
-      , link "https://github.com/rstefanic/rstefanic.github.io/tree/master/src" "View Source" 
+      , link "https://github.com/rstefanic/rstefanic.github.io" "View Source" 
       ]
     ]
 
