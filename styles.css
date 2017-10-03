@@ -106,6 +106,12 @@ li span {
   position: absolute;
   bottom: 0;
 }
+
+img.photograph {
+  display: block;
+  margin: 10px auto;
+}
+
 /* ================================= 
   Media Queries
 ==================================== */
@@ -136,12 +142,12 @@ li span {
     background-position: 0 -95px; 
   }
   .main > div {
-    float: right;
     width: 30%;
     max-width: 30%;
     display: inline-block;
     margin-top: 12px;
-    margin-right: 1.25%;
+    margin-right: 1.5%;
+    margin-left: 1.5%;
     margin-bottom: 3%;
   }
   h1 {

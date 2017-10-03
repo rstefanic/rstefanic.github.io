@@ -1,19 +1,8 @@
-var _rstefanic$rstefanic$Types$BlogPost = F3(
-	function (a, b, c) {
-		return {postId: a, title: b, content: c};
-	});
-var _rstefanic$rstefanic$Types$GetBlogPosts = function (a) {
-	return {ctor: 'GetBlogPosts', _0: a};
-};
-var _rstefanic$rstefanic$Types$FetchPosts = {ctor: 'FetchPosts'};
 var _rstefanic$rstefanic$Types$UrlChange = function (a) {
 	return {ctor: 'UrlChange', _0: a};
 };
 var _rstefanic$rstefanic$Types$RouteNotFound = {ctor: 'RouteNotFound'};
 var _rstefanic$rstefanic$Types$Photography = {ctor: 'Photography'};
-var _rstefanic$rstefanic$Types$Blog = function (a) {
-	return {ctor: 'Blog', _0: a};
-};
 var _rstefanic$rstefanic$Types$About = {ctor: 'About'};
 var _rstefanic$rstefanic$Types$Home = {ctor: 'Home'};
 var _rstefanic$rstefanic$Types$DefaultRoute = {ctor: 'DefaultRoute'};
