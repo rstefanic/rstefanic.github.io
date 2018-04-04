@@ -16,7 +16,7 @@ about = div [ class "main" ]
          , p [] 
            [ text "I currently work at "
            , a [ href "https://www.clubexpress.com" ] [ text "ClubExpress" ]
-           , text " doing tech support. Beyond this, I enjoy drumming, "
+           , text " as a developer. Beyond this, I enjoy drumming, "
            , text "wrestling, board games, gaming, photography, reading, "
            , text "spending time with family and friends, and endlessly "
            , text "modifying my text editor and computer environment."
