@@ -28,7 +28,7 @@ main = hakyll $ do
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
     
-    match "photos/*" $ compile copyFileCompiler
+    match "photos/*.markdown" $ compile getResourceBody 
 
     create ["archive.html"] $ do
         route idRoute
@@ -47,7 +47,7 @@ main = hakyll $ do
     create ["photos.html"] $ do
         route idRoute
         compile $ do
-            photos <- recentFirst =<< loadAll "photos/*"
+            photos <- recentFirst =<< loadAll "photos/*.markdown"
             let photosCtx =
                     listField "photos" photoCtx (return photos) `mappend`
                     constField "title" "Photos"                 `mappend`
@@ -86,6 +86,7 @@ postCtx =
 --------------------------------------------------------------------------------
 
 photoCtx :: Context String
-photoCtx = 
-    field "photo" (return . itemBody) `mappend`
-    defaultContext
+photoCtx = mconcat 
+    [ dateField "date" "%B %e, %Y"
+    , metadataField
+    ]
