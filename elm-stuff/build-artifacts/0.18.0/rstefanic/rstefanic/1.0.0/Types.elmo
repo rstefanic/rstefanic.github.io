@@ -1,8 +1,0 @@
-var _rstefanic$rstefanic$Types$UrlChange = function (a) {
-	return {ctor: 'UrlChange', _0: a};
-};
-var _rstefanic$rstefanic$Types$RouteNotFound = {ctor: 'RouteNotFound'};
-var _rstefanic$rstefanic$Types$Photography = {ctor: 'Photography'};
-var _rstefanic$rstefanic$Types$About = {ctor: 'About'};
-var _rstefanic$rstefanic$Types$Home = {ctor: 'Home'};
-var _rstefanic$rstefanic$Types$DefaultRoute = {ctor: 'DefaultRoute'};
