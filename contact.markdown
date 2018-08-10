@@ -2,5 +2,4 @@
 title: Contact
 ---
 
-I live in a small hut in the mountains of Kumano Kodō on Kii Hantō and would not
-like to be contacted.
+Feel free to [email me](mailto:me@robertstefanic.com) if you have any questions. I also have a [Twitter](https://twitter.com/RobertStefanic), but I must admit, that I have yet to find something that would be interesting to tweet.

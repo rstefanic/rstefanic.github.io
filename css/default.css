@@ -51,6 +51,27 @@ article .header {
   text-decoration: none;
 }
 
+.me {
+  border-radius: 25%;
+}
+
+ul.photo-list {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+.photo {
+  max-width: 100%;
+}
+
+.sourceCode {
+  font-size: small;
+}
+
+code {
+  font-size: medium;
+}
+
 @media (max-width: 319px) {
   body {
     width: 90%;
