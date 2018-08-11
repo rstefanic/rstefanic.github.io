@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Robert Stefanic - Discovering Monads in C#</title>
+        <link rel="stylesheet" href="../css/default.css" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <a href="../">Robert Stefanic</a>
+            </div>
+            <nav>
+                <a href="../">Home</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../photos.html">Photos</a>
+                <a href="../blog.html">Blog</a>
+                <a href="https://github.com/rstefanic">GitHub</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <article>
+    <h1>Discovering Monads in C#</h1>
+    <section class="header">
+        Posted on August 10, 2018
+        
+            by Robert
+        
+    </section>
+    <section>
+        <h3 id="the-motivation">The Motivation</h3>
+<p>This was originally a post that I'd written on reddit, but I figured it'd be worth it to clean it up and clarify what I was saying.</p>
+<p>The post was in regards to someone trying to use a monad in C# just to practice monads. I replied by saying that the best way to learn how monads work was to discover them.</p>
+<p>It's much better to see how they can help you rather than just being told &quot;this pattern will help you write code.&quot; At the end of the day, monads are just a design pattern that help you write and maintain your code.</p>
+<p>Before I start this though, I just wanted to clarify two quick points. The first one is that some people point to <code>Nullable&lt;T&gt;</code> as an instance of a monad in C#.</p>
+<p>While <code>Nullable&lt;T&gt;</code> can be seen as something similar to a maybe monad in the sense that it allows a type to be null, it's lacking some features that a <code>Maybe&lt;T&gt;</code> monad would have. But that doesn't mean <code>Nullable&lt;T&gt;</code> isn't what you're looking for: it might be exactly what you need. I find myself reaching for <code>Nullable&lt;T&gt;</code> more and more because there's no reason for me to use a <code>Maybe&lt;T&gt;</code> monad.</p>
+<p>With that said though, I do find myself using the maybe monad in my C# projects here and there, and I figured I'd share a use case for it by using a real world example.</p>
+<p>My second point is that this is not a full monad. I'm sure someone would have pointed it out, and I just want to make it clear. In category theory, a monad needs to have two natural transformations (η and μ), but this implementation below only has one (η). The other transformation is irrelevant to this example, and since I'm writing code for a real world application, I had no need to write the other part because it would've never been used.</p>
+<p>So, now onto what my problem was and an example of how implementing a maybe monad helped.</p>
+<hr />
+<h3 id="my-real-world-problem">My Real World Problem</h3>
+<p>I have an application that makes a request to an API for currency conversion rates. I send off a request to an API, I get the conversion rate (which is a decimal type), and then I pass that conversion rate value around to a few functions. However, the application I'm working on allows the user to type in any three letter country code for a conversion rate. So Joe Blow could say that they want to convert USD to YZZ. Well, YZZ isn't a currency code that's recognized by the API that I'm using, so I wouldn't get anything useful back; yet, once I get a value back, I'm passing it around to a few functions.</p>
+<p>And besides just this user error, there are other things that could go wrong! There could be an error while connecting to the API or there could be an internal server error with the API that I'm requesting, all on top of the fact that the user could input a garbage value. So what do I do if I get an error instead of the decimal that I was initially requesting?</p>
+<p>This is where the maybe monad comes in. I'm expecting a decimal value to be returned when I make a request to this API, but we've just identified some cases where I'm not going to get a decimal value back. There are cases here where I could get an error back. So I want to construct a type that accommodates both a decimal value and the possibility for error. A maybe monad could help me handle this, along with giving me some extra functionality.</p>
+<hr />
+<h3 id="a-quick-detour-into-types">A Quick Detour into Types</h3>
+<p>Let's briefly talk about types. A type is a collection of values. So what makes up the decimal type that I'm expecting in this example? It's a number anywhere between 79228162514264337593543950335 and -79228162514264337593543950335. That's quiet a range of possible values.</p>
+<p>In the example that I just gave though, I want to <strong>extend</strong> the range of possible values on the decimal type could have and say that &quot;this decimal could be any number between -79228162514264337593543950335 and 79228162514264337593543950335, <strong>or</strong> it could be null.&quot; A maybe monad would allow me to do just this. I could extend the decimal type in this way, and say &quot;this is a type that is either a number with a precision of 28-29 significant digits or there is no value.&quot;</p>
+<p>By adding a maybe monad, instead of just saying that &quot;I'm expecting a decimal value back from this request&quot;, I'm saying that &quot;I'm expecting either a decimal value back or nothing back from this request.&quot; Now I'm doing some error handling through my types. And this is powerful, because now I can write one function that does my null checking for me, without having to manually write my error checking code for each function that receives the decimal value that I retrieved from the API.</p>
+<hr />
+<h3 id="lets-start-building-the-monad">Let's start building the monad!</h3>
+<p>So now that we know how it can help us, let's build a (partial) monad! I started with an abstract class called <code>Maybe&lt;T&gt;</code>, and I created two other classes that inherit from it: <code>Just&lt;T&gt;</code> and <code>Nothing&lt;T&gt;</code>. So if something is a <code>Maybe&lt;T&gt;</code>, that means it is either a <code>Just&lt;T&gt;</code> or a <code>Nothing&lt;T&gt;</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cs"><code class="sourceCode cs"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">public</span> <span class="kw">abstract</span> <span class="kw">class</span> Maybe&lt;T&gt;</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">     <span class="kw">public</span> <span class="kw">static</span> Func&lt;Maybe&lt;T&gt;, Func&lt;T, Maybe&lt;T&gt;&gt;, Maybe&lt;T&gt;&gt; Bind = (a, func) =&gt;</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">     {</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">          <span class="co">// Cast the Maybe&lt;T&gt; Value that was passed in as a Just&lt;T&gt;</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">          <span class="co">// If it cannot be cast to Just&lt;T&gt;, then validJust will be null.</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">          Just&lt;T&gt; validJust = a <span class="kw">as</span> Just&lt;T&gt;;</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">          <span class="co">// If the cast is null, return Nothing&lt;T&gt;, otherwise pass the value</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">          <span class="co">// contained within Just&lt;T&gt; to the function that was passed to Bind.</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">          <span class="kw">if</span> (validJust == <span class="kw">null</span>)</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">              <span class="kw">return</span> <span class="kw">new</span> Nothing&lt;T&gt;();</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">          <span class="kw">else</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">              <span class="kw">return</span> <span class="fu">func</span>(validJust.<span class="fu">Value</span>);</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">      };</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">      <span class="kw">public</span> <span class="kw">abstract</span> <span class="kw">override</span> <span class="dt">string</span> <span class="fu">ToString</span>();</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">  }</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="kw">public</span> <span class="kw">class</span> Nothing&lt;T&gt; : Maybe&lt;T&gt;</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">{</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">    <span class="co">// This doesn't have any members because Nothing&lt;T&gt; </span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">    <span class="co">// a failure in computing something.</span></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">    <span class="kw">public</span> <span class="kw">override</span> <span class="dt">string</span> <span class="fu">ToString</span>()</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">    {</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">        <span class="kw">return</span> <span class="st">&quot;Nothing&quot;</span>;</a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">    }</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31">}</a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="kw">public</span> <span class="kw">class</span> Just&lt;T&gt; : Maybe&lt;T&gt;</a>
+<a class="sourceLine" id="cb1-34" data-line-number="34">{</a>
+<a class="sourceLine" id="cb1-35" data-line-number="35">    <span class="co">// This has one member, anything of type T.</span></a>
+<a class="sourceLine" id="cb1-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">    <span class="kw">public</span> T Value { <span class="kw">get</span>; <span class="kw">private</span> <span class="kw">set</span>; }</a>
+<a class="sourceLine" id="cb1-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb1-39" data-line-number="39">    <span class="kw">public</span> <span class="fu">Just</span>(T value)</a>
+<a class="sourceLine" id="cb1-40" data-line-number="40">    {</a>
+<a class="sourceLine" id="cb1-41" data-line-number="41">        <span class="kw">this</span>.<span class="fu">Value</span> = value;</a>
+<a class="sourceLine" id="cb1-42" data-line-number="42">    }</a>
+<a class="sourceLine" id="cb1-43" data-line-number="43"></a>
+<a class="sourceLine" id="cb1-44" data-line-number="44">    <span class="kw">public</span> <span class="kw">override</span> <span class="dt">string</span> <span class="fu">ToString</span>()</a>
+<a class="sourceLine" id="cb1-45" data-line-number="45">    {</a>
+<a class="sourceLine" id="cb1-46" data-line-number="46">        <span class="kw">return</span> <span class="st">&quot;Just (&quot;</span>+ <span class="kw">this</span>.<span class="fu">Value</span>.<span class="fu">ToString</span>() + <span class="st">&quot;)&quot;</span>;</a>
+<a class="sourceLine" id="cb1-47" data-line-number="47">    }</a>
+<a class="sourceLine" id="cb1-48" data-line-number="48">}</a></code></pre></div>
+<p><code>Nothing&lt;T&gt;</code> is my &quot;null&quot; type and <code>Just&lt;T&gt;</code> represents a value of type <code>T</code>. <code>Nothing&lt;T&gt;</code> doesn't hold any value while <code>Just&lt;T&gt;</code> does hold a value.</p>
+<p>The base class of <code>Maybe&lt;T&gt;</code> has a function called <code>Bind</code>. Since <code>Just&lt;T&gt;</code> and <code>Nothing&lt;T&gt;</code> are inherited from <code>Maybe&lt;T&gt;</code>, either <code>Just&lt;T&gt;</code> or <code>Nothing&lt;T&gt;</code> will work with my <code>Bind</code> function.</p>
+<p>The <code>Bind</code> function is what's saving me headaches here, and it's why I would choose to use a maybe monad instead of <code>Nullable&lt;T&gt;</code>. <code>Bind</code> is a function that takes a <code>Maybe&lt;T&gt;</code> (so any inherited class of <code>Maybe&lt;T&gt;</code>), another function that takes a value of <code>T</code> and outputs a <code>Maybe&lt;T&gt;</code>, and returns a <code>Maybe&lt;T&gt;</code>.</p>
+<p>Remember earlier when I said I can write one function that does my null checking for me? This is what <code>Bind</code> is doing for me. It's doing the error checking for me. I pass a <code>Maybe&lt;T&gt;</code> and a function to <code>Bind</code>. If the first argument to bind is <code>Nothing&lt;T&gt;</code>, then <code>Bind</code> just returns <code>Nothing&lt;T&gt;</code>. If it's <code>Just&lt;T&gt;</code>, then it will return the value from applying the function to the value inside of <code>Just&lt;T&gt;</code>. Check out my comments in <code>Bind</code> for more information.</p>
+<hr />
+<h3 id="applying-our-monad-to-a-real-world-scenario">Applying our monad to a real world scenario</h3>
+<p>So now let's look at the snippet of code where I'm parsing the response from the API:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cs"><code class="sourceCode cs"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">private</span> <span class="kw">static</span> Maybe&lt;<span class="dt">decimal</span>&gt; <span class="fu">parseExchangeRate</span>(<span class="dt">string</span> rate)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="kw">if</span> (<span class="dt">decimal</span>.<span class="fu">TryParse</span>(rate, <span class="kw">out</span> <span class="dt">decimal</span> exchangeRate))</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">        <span class="kw">return</span> <span class="kw">new</span> Just&lt;<span class="dt">decimal</span>&gt;(exchangeRate);</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="kw">else</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">        <span class="kw">return</span> <span class="kw">new</span> Nothing&lt;<span class="dt">decimal</span>&gt;();</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">}</a></code></pre></div>
+<p>So this function takes the rate, and parses it. If it was successful, then it returns a <code>Just&lt;decimal&gt;</code> containing the rate. If it failed, then I return <code>Nothing&lt;decimal&gt;</code>.</p>
+<p>Now that the parsed rate is of <code>Maybe&lt;decimal&gt;</code>, I don't have to check to see if it's null or not because <code>Bind</code> does it for me.</p>
+<p>Now this is where things get interesting! Once I have my parsedExchangeRate, I can just pass it right along to <code>calculateRate</code>. This means that I can just multiple the result from <code>parseExchangeRate</code> without having to check to see if there is a value there or not: I just pass the value from <code>parseExchangeRate</code> along with my mutliplication function to <code>Bind</code>, and <code>Bind</code> will handle the null checking for me!</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cs"><code class="sourceCode cs"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">private</span> Maybe&lt;<span class="dt">decimal</span>&gt; <span class="fu">calculateRate</span>(Maybe&lt;<span class="dt">decimal</span>&gt; parsedExchangeRate)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">    <span class="kw">return</span> Maybe&lt;<span class="dt">decimal</span>&gt;.<span class="fu">Bind</span>(parsedExchangeRate, x =&gt;</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">    {</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">        <span class="kw">return</span> <span class="kw">new</span> Just&lt;<span class="dt">decimal</span>&gt;(x * <span class="kw">this</span>.<span class="fu">SourceAmount</span>);</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">    });</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">}</a></code></pre></div>
+<p><em>As a quick side note about the code above, SourceAmount is a member variable of the class that contains this method.</em></p>
+<p>If the value that was passed to <code>calculateRate</code> was <code>Just&lt;decimal&gt;</code>, then the result will be <code>Just&lt;decimal&gt;</code>. On the other hand, if <code>Nothing&lt;decimal&gt;</code> was passed as the value, then the output will be <code>Nothing&lt;decimal&gt;</code>.</p>
+<hr />
+<h3 id="summary">Summary</h3>
+<p>From this example, you can see that you don't need monads to program. They aren't necessary. You could have written this without writing a monad accommodate failure.</p>
+<p>But look at what we've got for free through this extra work. I don't want to write the error checking code over and over again because it's tedious. I wrote the error checking code once in <code>Bind</code>, and it takes care of the checking for me. I can now compose functions using <code>Maybe&lt;decimal&gt;</code> over and over, and not worry about whether or not I'm error checking correctly because I've written once. On top of that, since <code>Maybe&lt;T&gt;</code> is a generic, I can extend other types just like I extended the decimal type.</p>
+<p>The whole point is that I saved myself some time and headaches. I wrote my error checking code once, I'm confident in the sense that I know it works properly, and now I don't have to write it again. It can be re-used with other types, and I can easily compose other functions with these new extended type I've created.</p>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>. 
+            You can view the code used to generate this site <a href="#">here</a>.
+        </footer>
+    </body>
+</html>
