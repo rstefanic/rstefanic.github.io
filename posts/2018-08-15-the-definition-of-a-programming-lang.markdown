@@ -55,9 +55,9 @@ But the exclusion of DSLs rules out programming languages like Emacs Lisp becaus
 
 >**PL-4`**: A programming language is a set of instructions, created using a special syntax that is not a DSL, except in the case when the DSL is Turing complete, in order to produce a specific output. 
 
-This definition seems incredibly ad-hoc. On top of that, while PL-4` would include Emacs Lisp, it would also end up including TeX anyways, which is markup language. 
+This definition seems incredibly ad-hoc. Without being given a reason as to why we should we consider DSLs that are Turing complete as the defining characteristic of what makes a programing language, I don\'t see why we should accept PL-4`.
 
-Plus, without being given a reason as to why we should we consider DSLs that are Turing complete as the defining characteristic of what makes a programing language, I don\'t see why we should accept PL-4`. 
+On top of that, while PL-4` would include Emacs Lisp, it would also end up including TeX anyways, which is markup language. 
 
 This route seems like it is going to get complicated quickly, and unless we have good reason to say that DSLs that are Turing complete is the relevant factor for considering what is a programing language and what is not a programing language, then it seems like we\'re better off abandoning this route. 
 
