@@ -4,7 +4,6 @@ import           Data.Monoid (mappend)
 import           Hakyll
 import           Text.Pandoc.Options
 
-
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
@@ -75,14 +74,13 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateBodyCompiler
 
-
 --------------------------------------------------------------------------------
-
 postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" `mappend`
     defaultContext
 
+--------------------------------------------------------------------------------
 pandocMathCompiler :: Compiler (Item String)
 pandocMathCompiler = 
     let mathExtensions = extensionsFromList [Ext_tex_math_dollars, Ext_tex_math_double_backslash,
@@ -96,7 +94,6 @@ pandocMathCompiler =
     in pandocCompilerWith defaultHakyllReaderOptions writerOptions
 
 --------------------------------------------------------------------------------
-
 photoCtx :: Context String
 photoCtx = mconcat 
     [ dateField "date" "%B %e, %Y"

@@ -53,11 +53,12 @@ operations matter in subtraction ($1 - (2 - 3) \neq (1 - 2) - 3$).[<sup>2</sup>]
 So given set $S$, $S$ is a semigroup if it has the binary operation of $f$,
 where $f$ is associative.
 
-\[f\colon S\times S\rightarrow S\]
+\\[f\\colon S\\times S\\rightarrow S\\]
 
-\[\forall(\alpha, \beta, \delta)\in S\colon f(f(\alpha, \beta), \delta) = f(\alpha,
-f(\beta, \delta))\]
-___
+\\[\\forall(\\alpha, \\beta, \\delta)\\in S\\colon f(f(\\alpha, \\beta),
+\\delta) = f(\\alpha,
+f(\\beta, \\delta))\\]
+
 ### Monoids
 
 Every monoid is a semigroup. In fact, if you look at the typeclass for Monoid in
@@ -85,13 +86,12 @@ emtpy string because ```"" + "Hello!" = "Hello!"```.
 So given set $S$, $S$ is a monoid if it has the binary operation of $f$, where
 $f$ is associative and $S$ has an identity element.
 
-\[f\colon S\times S\rightarrow S\]
+\\[f\\colon S\\times S\\rightarrow S\\]
 
-\[\forall(\alpha, \beta, \delta)\in S\colon f(f(\alpha, \beta), \delta) = f(\alpha,
-f(\beta, \delta))\]
+\\[\\forall(\\alpha, \\beta, \\delta)\\in S\\colon f(f(\\alpha, \\beta), \\delta) = f(\\alpha, f(\\beta, \\delta))\\]
 
-\[\forall x \exists!e \in S\colon f(e, x) = x\]
-___
+\\[\\forall x \\exists!e \\in S\\colon f(e, x) = x\\]
+
 ### Groups
 
 Just as monoids have all of the properties of a semigroup with an additional
@@ -113,16 +113,16 @@ is associative, $S$ has an identity element, and for any element $x$ in $S$,
 there exists element $y$ in $S$, where $f$ applied to $x$ and $y$ will yield the
 identity element.
 
-\[f\colon S\times S\rightarrow S\]
+\\[f\\colon S\\times S\\rightarrow S\\]
 
-\[\forall(\alpha, \beta, \delta)\in S\colon f(f(\alpha, \beta), \delta) = f(\alpha,
-f(\beta, \delta))\]
+\\[\\forall(\\alpha, \\beta, \\delta)\\in S\\colon f(f(\\alpha, \\beta), \\delta) = f(\\alpha, f(\\beta, \\delta))\\]
 
-\[\forall x \exists!e \in S\colon f(e, x) = x\]
+\\[\\forall x \\exists!e \\in S\\colon f(e, x) = x\\]
 
-\[\forall x \exists y \in S\colon y = x^{-1}\]
+\\[\\forall x \\exists y \\in S\\colon y = x^{-1}\\]
 
-\[\forall x \exists y \exists!e \in S\colon f(x, y) = e\]
+\\[\\forall x \\exists y \\exists!e \\in S\\colon f(x, y) = e\\]
+
 ___
 ## Groups, Monoids, and Semigroups in the Wild
 
@@ -218,11 +218,11 @@ instance Group Pixel where
 ```
 
 ___
-<span id="note1">1</span>: This is another good reason to used a type language
+<span id="note-1">1</span>: This is another good reason to used a type language
 because you can then add this information to your functions, where in duck typed
 langauges, your functions cannot enforce these contraints.
 
-<span id="note2">2</span>: A set that has a single binary operation is known as
+<span id="note-2">2</span>: A set that has a single binary operation is known as
 a groupoid. So while subtraction is not a semigroup, it is a groupoid because it
 contains a closed binary operation, as this is the only requirement that needs
 to be met in order for something to be a groupoid. A closed binary operation
