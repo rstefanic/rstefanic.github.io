@@ -49,8 +49,9 @@
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="bu">std::</span>string concat(<span class="bu">std::</span>string a, <span class="bu">std::</span>string b) {...}</a></code></pre></div>
 <p>The associativity property says that given a sequence of two or more binary operations, the order in which these operations are performed do not matter. An example of this would be addition, where <span class="math inline">1 + (2 + 3) = (1 + 2) + 3</span>. From the previous examples given, addition and string concatenation are associative binary operations, but subtraction is not associative because the order of operations matter in subtraction (<span class="math inline">1 − (2 − 3) ≠ (1 − 2) − 3</span>).<a href="#note-2"><sup>2</sup></a></p>
 <p>So given set <span class="math inline"><em>S</em></span>, <span class="math inline"><em>S</em></span> is a semigroup if it has the binary operation of <span class="math inline"><em>f</em></span>, where <span class="math inline"><em>f</em></span> is associative.</p>
-<p>[fSSS]</p>
-<p>[(, , )Sf(f(, ), ) = f(, f(, ))] ___ ### Monoids</p>
+<p>\[f\colon S\times S\rightarrow S\]</p>
+<p>\[\forall(\alpha, \beta, \delta)\in S\colon f(f(\alpha, \beta), \delta) = f(\alpha, f(\beta, \delta))\]</p>
+<h3 id="monoids">Monoids</h3>
 <p>Every monoid is a semigroup. In fact, if you look at the typeclass for Monoid in Haskell, you’ll see that Monoid requires Semigroup:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">class</span> <span class="dt">Semigroup</span> a <span class="ot">=&gt;</span> <span class="dt">Monoid</span> a <span class="kw">where</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="ot">  mempty ::</span> a</a>
@@ -60,18 +61,21 @@
 <p>Monoids are just semigroups that have an identity element. For element <span class="math inline"><em>x</em></span> (where <span class="math inline"><em>x</em></span> is any element from set <span class="math inline"><em>S</em></span>), when <span class="math inline"><em>x</em></span> and the identity element are combined with <span class="math inline"><em>f</em></span>, the result will always be <span class="math inline"><em>x</em></span>.</p>
 <p>In the example of addition, the identity element would be 0 because <span class="math inline">0 + <em>x</em> = <em>x</em></span>. In the case of multiplication, the identity element would be 1 because <span class="math inline">1 ⋅ <em>x</em> = <em>x</em></span>. And in the case of string concatenation, the identity element would be an emtpy string because <code>&quot;&quot; + &quot;Hello!&quot; = &quot;Hello!&quot;</code>.</p>
 <p>So given set <span class="math inline"><em>S</em></span>, <span class="math inline"><em>S</em></span> is a monoid if it has the binary operation of <span class="math inline"><em>f</em></span>, where <span class="math inline"><em>f</em></span> is associative and <span class="math inline"><em>S</em></span> has an identity element.</p>
-<p>[fSSS]</p>
-<p>[(, , )Sf(f(, ), ) = f(, f(, ))]</p>
-<p>[x !e Sf(e, x) = x] ___ ### Groups</p>
+<p>\[f\colon S\times S\rightarrow S\]</p>
+<p>\[\forall(\alpha, \beta, \delta)\in S\colon f(f(\alpha, \beta), \delta) = f(\alpha, f(\beta, \delta))\]</p>
+<p>\[\forall x \exists!e \in S\colon f(e, x) = x\]</p>
+<h3 id="groups">Groups</h3>
 <p>Just as monoids have all of the properties of a semigroup with an additional property, groups has all of the properties of a monoid with the additional property of an inverse operation.</p>
 <p>An inverse operation says that given any element in the closed set, there is an inverse element that also exists. So to continue with our math examples, for every number in the set of all integers, for any number that you give me (e.g. 5), that number will always have a corresponding negative number (-5). So if set <span class="math inline"><em>S</em></span> is all the integers, and we have the addition operator, then <span class="math inline"><em>S</em></span> is a group.</p>
 <p>In contrast to our other example of string concatenation, strings do not have a cooresponding inverse or reciprocal string; thus it cannot be a group. (What would the inverse of <code>&quot;Hello!&quot;</code> be?)</p>
 <p>So to summarize, <span class="math inline"><em>S</em></span> is a group if it has the binary operation of <span class="math inline"><em>f</em></span>, where <span class="math inline"><em>f</em></span> is associative, <span class="math inline"><em>S</em></span> has an identity element, and for any element <span class="math inline"><em>x</em></span> in <span class="math inline"><em>S</em></span>, there exists element <span class="math inline"><em>y</em></span> in <span class="math inline"><em>S</em></span>, where <span class="math inline"><em>f</em></span> applied to <span class="math inline"><em>x</em></span> and <span class="math inline"><em>y</em></span> will yield the identity element.</p>
-<p>[fSSS]</p>
-<p>[(, , )Sf(f(, ), ) = f(, f(, ))]</p>
-<p>[x !e Sf(e, x) = x]</p>
-<p>[x y Sy = x^{-1}]</p>
-<p>[x y !e Sf(x, y) = e] ___ ## Groups, Monoids, and Semigroups in the Wild</p>
+<p>\[f\colon S\times S\rightarrow S\]</p>
+<p>\[\forall(\alpha, \beta, \delta)\in S\colon f(f(\alpha, \beta), \delta) = f(\alpha, f(\beta, \delta))\]</p>
+<p>\[\forall x \exists!e \in S\colon f(e, x) = x\]</p>
+<p>\[\forall x \exists y \in S\colon y = x^{-1}\]</p>
+<p>\[\forall x \exists y \exists!e \in S\colon f(x, y) = e\]</p>
+<hr />
+<h2 id="groups-monoids-and-semigroups-in-the-wild">Groups, Monoids, and Semigroups in the Wild</h2>
 <p>Alright, so now we know what these algebras are, but how do they apply to real world situations? I’ve come up with three examples to show how they may be used.</p>
 <h3 id="semigroup-example">Semigroup Example</h3>
 <p>Let’s say that we have a database with a really large view that we want to query, but we almost never need all of the fields from the view. This looks like it would be a great job for a semigroup!</p>
@@ -122,8 +126,8 @@
 <a class="sourceLine" id="cb7-18" data-line-number="18">    inverse (<span class="dt">Pixel</span> r g b) <span class="fu">=</span> </a>
 <a class="sourceLine" id="cb7-19" data-line-number="19">        <span class="dt">Pixel</span> (negateColor r) (negateColor g) (negateColor b)</a></code></pre></div>
 <hr />
-<p><span id="note1">1</span>: This is another good reason to used a type language because you can then add this information to your functions, where in duck typed langauges, your functions cannot enforce these contraints.</p>
-<p><span id="note2">2</span>: A set that has a single binary operation is known as a groupoid. So while subtraction is not a semigroup, it is a groupoid because it contains a closed binary operation, as this is the only requirement that needs to be met in order for something to be a groupoid. A closed binary operation just means that the binary operation always yeilds another member of the same set.</p>
+<p><span id="note-1">1</span>: This is another good reason to used a type language because you can then add this information to your functions, where in duck typed langauges, your functions cannot enforce these contraints.</p>
+<p><span id="note-2">2</span>: A set that has a single binary operation is known as a groupoid. So while subtraction is not a semigroup, it is a groupoid because it contains a closed binary operation, as this is the only requirement that needs to be met in order for something to be a groupoid. A closed binary operation just means that the binary operation always yeilds another member of the same set.</p>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </section>
 </article>
