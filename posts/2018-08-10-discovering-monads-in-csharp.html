@@ -132,7 +132,7 @@
 <p>From this example, you can see that you don't need monads to program. They aren't necessary. You could have written this without writing a monad accommodate failure.</p>
 <p>But look at what we've got for free through this extra work. I don't want to write the error checking code over and over again because it's tedious. I wrote the error checking code once in <code>Bind</code>, and it takes care of the checking for me. I can now compose functions using <code>Maybe&lt;decimal&gt;</code> over and over, and not worry about whether or not I'm error checking correctly because I've written once. On top of that, since <code>Maybe&lt;T&gt;</code> is a generic, I can extend other types just like I extended the decimal type.</p>
 <p>The whole point is that I saved myself some time and headaches. I wrote my error checking code once, I'm confident in the sense that I know it works properly, and now I don't have to write it again. It can be re-used with other types, and I can easily compose other functions with these new extended type I've created.</p>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </section>
 </article>
 
