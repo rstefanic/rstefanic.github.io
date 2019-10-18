@@ -1,5 +1,6 @@
 html {
-  font-size: 62.5%;
+  background-color: #eee;
+  font-size: 70%;
 }
 
 body {
@@ -45,6 +46,11 @@ article .header {
   color: #555;
 }
 
+iframe {
+  display: block;
+  margin: 0 auto;
+}
+
 .logo a {
   font-weight: bold;
   color: #000;
@@ -53,6 +59,8 @@ article .header {
 
 .me {
   border-radius: 25%;
+  max-width: 300px;
+  width: 100%;
 }
 
 ul.photo-list {
@@ -61,15 +69,14 @@ ul.photo-list {
 }
 
 .photo {
+  display: block;
+  margin: 3% auto;
   max-width: 100%;
 }
 
+code,
 .sourceCode {
-  font-size: small;
-}
-
-code {
-  font-size: medium;
+  font-size: 1em;
 }
 
 p a {
@@ -92,7 +99,6 @@ td.sourceCode { padding-left: 5px; }
 .sourceCode span.ot { color: #007020; }
 .sourceCode span.al { color: red; font-weight: bold; }
 .sourceCode span.fu { color: #06287e; }
-.sourceCode span.re { }
 .sourceCode span.er { color: red; font-weight: bold; }
 
 @media (max-width: 319px) {
@@ -126,7 +132,7 @@ td.sourceCode { padding-left: 5px; }
 
 @media (min-width: 320px) {
   body {
-    width: 90%;
+    width: 80%%;
     margin: 0;
     padding: 0 5%;
   }
@@ -155,7 +161,7 @@ td.sourceCode { padding-left: 5px; }
 
 @media (min-width: 640px) {
   body {
-    width: 60rem;
+    width: 60%;
     margin: 0 auto;
     padding: 0;
   }
@@ -180,6 +186,6 @@ td.sourceCode { padding-left: 5px; }
   }
   .logo a {
     float: left;
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 }
