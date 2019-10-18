@@ -2,4 +2,4 @@
 title: Contact
 ---
 
-Feel free to <a href="mailto:me@robertstefanic.com">email me</a> if you have any questions or comments. I also have a <a href="https://twitter.com/RobertStefanic" target="_blank">Twitter</a>, but I must admit, that I have yet to find anything that would be interesting to tweet.
+If you would like to get a hold of me, you can email me at <a href="mailto:me@robertstefanic.com">me@robertstefanic.com</a>. I don't have any social media accounts, and since the only thing I check is my email, I'm usually quick to respond.
