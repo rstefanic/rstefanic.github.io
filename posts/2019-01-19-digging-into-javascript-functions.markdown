@@ -1,6 +1,6 @@
 ---
 title: 'Digging into JS Functions'
-author: 'Robert'
+author: 'Robert Stefanic'
 ---
 
 I recently gave a talk at the Northwest Chicago JavaScript meetup on functions in JavaScript. I really wanted to explore functions in JavaScript because they had so many interesting characteristics such as the following:

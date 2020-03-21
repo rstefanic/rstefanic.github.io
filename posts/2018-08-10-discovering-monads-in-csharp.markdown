@@ -1,6 +1,6 @@
 ---
 title: Discovering Monads in C#
-author: Robert
+author: Robert Stefanic
 ---
 
 ### The Motivation

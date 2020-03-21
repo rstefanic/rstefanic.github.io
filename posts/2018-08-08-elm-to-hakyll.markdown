@@ -1,6 +1,6 @@
 ---
 title: 'Switching from Elm to Hakyll'
-author: 'Robert'
+author: 'Robert Stefanic'
 ---
 
 Before this site was generated using [Hakyll](https://jaspervdj.be/hakyll/), it was written in [Elm](http://elm-lang.org/). Elm\'s appeal is that it offers a way to write purely functional, static, strongly typed code with ML like syntax that compiles to JavaScript. This sounded way better than writing JS,[<sup>1</sup>](#note-1) which is why I jumped into using Elm. 

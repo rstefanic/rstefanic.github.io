@@ -1,6 +1,6 @@
 ---
 title: 'Groups, Monoids, and Semigroups'
-author: 'Robert'
+author: 'Robert Stefanic'
 ---
 
 I want to explore the relationship between Groups, Monoids, and Semigroups. 
