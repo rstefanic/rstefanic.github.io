@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Robert Stefanic - Let's get this SHR: or, how could there possibly be 10 different ways to shift bits in x86 assembler?</title>
+        <link rel="stylesheet" href="../css/default.css" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <a href="../">Robert Stefanic</a>
+            </div>
+            <nav>
+                <a href="../">Home</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../photos.html">Photos</a>
+                <a href="../blog.html">Blog</a>
+                <a href="https://github.com/rstefanic" target="_blank">GitHub</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <article>
+    <h1>Let's get this SHR: or, how could there possibly be 10 different ways to shift bits in x86 assembler?</h1>
+    <section class="header">
+        Posted on March 21, 2020
+        
+            by Robert Stefanic
+        
+    </section>
+    <section>
+        <p>The x86 instruction set is quite the behemoth. If you’re just looking at the base 8086/8088 instruction set, then it doesn’t seem so bad. But with each generation of processors that came out after that, more and more instructions were added. Now we have this giagantic instruction set where it’s hard to tell the slight naunces between some of these instructions. Just looking at an index of all the x86 instructions is tiring.</p>
+<p>As one can imagine, there are many ways you can shift bits in x86. More precisely, there are 10 different ways to shift bits with x86</p>
+<p>This post also assumes you know what bit shifting is. So it’s not going to explain what bit shifting is, but it will detail <em>how</em> the shifts in x86 differ. Besides two of the ten shift instructions, these shift instructions all do slightly different things (two of the shifts are isomorphic).</p>
+<hr />
+<h3 id="the-basics">The Basics</h3>
+<p>The shift instructions can be broken up into four main kinds. There are <strong>logical</strong> shifts, <strong>arithmetic</strong> shifts, <strong>rotational</strong> shifts, and <strong>double</strong> shifts.</p>
+<ul>
+<li><strong>Logical</strong> shifts are shifts that fill in the new bit positions with 0s.</li>
+<li><strong>Arithmetic</strong> shifts are shifts that fill in the new bit positions with a copy of the original number’s sign.</li>
+<li><strong>Rotational</strong> shifts are shifts that rotate the bits in a circular fashion.</li>
+<li><strong>Double</strong> shifts are shifts fill in the new bit positions at the destination operand with the bits from the source operand.</li>
+</ul>
+<p>Every <strong>logical</strong>, <strong>arithmetic</strong>, and <strong>rotational</strong> shift instruction has the same format: the first operand is the <em>destination</em> operand, and the second operand is the <em>amount</em> of shifts to be performed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb1-1" data-line-number="1">    ShiftInstruction DESTINATION, AMOUNT</a></code></pre></div>
+<p>We’ll work our way through these shifts by their kind.</p>
+<hr />
+<h3 id="the-logical-shifts">The Logical Shifts</h3>
+<h4 id="shl-shift-left">SHL (Shift Left)</h4>
+<p><code>SHL</code> shifts the bits logically to the left filling in the lowest bits with a zero. The highest bit is then moved into the carry flag, and the bit that was in the carry flag before this operation is discarded.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb2-1" data-line-number="1">    <span class="bu">mov</span> <span class="kw">al</span><span class="bn">, 07Fh    </span><span class="co">; AL = 01111111b, CF = 0</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="bu">shl</span> <span class="kw">al</span>, <span class="dv">1</span>       <span class="co">; AL = 11111110b, CF = 0</span></a></code></pre></div>
+<h4 id="shr-shift-right">SHR (Shift Right)</h4>
+<p><code>SHR</code> is the complement to <code>SHL</code>. It shifts the bits logically to the right filling in the highest bits with a zero. The lowest bit is then moved into the carry flag, and the bit that was in the carry flag before this operation is discarded.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb3-1" data-line-number="1">    <span class="bu">mov</span> <span class="kw">al</span><span class="bn">, 07Fh    </span><span class="co">; AL = 01111111b, CF = 0</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">    <span class="bu">shr</span> <span class="kw">al</span>, <span class="dv">1</span>       <span class="co">; AL = 00111111b, CF = 1</span></a></code></pre></div>
+<hr />
+<h3 id="the-arithmetic-shifts">The Arithmetic Shifts</h3>
+<h4 id="sal-shift-arithmetic-left">SAL (Shift Arithmetic Left)</h4>
+<p><code>SAL</code> works exactly the same as the <code>SHL</code> instruction. So why does it exist? It really only exists because it complements <code>SAR</code>, which <em>does</em> do something different from <code>SHR</code>.</p>
+<h4 id="shr-shift-arithmetic-right">SHR (Shift Arithmetic Right)</h4>
+<p><code>SAR</code> performs a shift on the bits arithmetically to the right, filling in the highest bit with the signed bit of the number instead of always just filling it in with a 0. The lowest bit is still moved into the carry flag, and the bit that was in the carry flag before this operation is discarded.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb4-1" data-line-number="1">    <span class="bu">mov</span> <span class="kw">al</span><span class="bn">, 0F0h    </span><span class="co">; AL = 11110000b</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="bu">sar</span> <span class="kw">al</span>, <span class="dv">1</span>       <span class="co">; AL = 11111000b</span></a></code></pre></div>
+<hr />
+<h3 id="the-rotational-shifts">The Rotational Shifts</h3>
+<p>Let’s kick it up a notch. What if we need to finagle the bits just a bit more?</p>
+<h4 id="rol-rotate-left">ROL (Rotate Left)</h4>
+<p><code>ROL</code> shifts the bits to the left. But instead of discarding the highest bit, it copies the highest bit into both the carry flag <strong>and</strong> the lowest bit position.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb5-1" data-line-number="1">   <span class="bu">mov</span> <span class="kw">al</span><span class="bn">, 010000000b</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">   <span class="bu">rol</span> <span class="kw">al</span>, <span class="dv">2</span>             <span class="co">; AL = 000000001b, CF = 1</span></a></code></pre></div>
+<h4 id="ror-rotate-right">ROR (Rotate Right)</h4>
+<p><code>ROR</code> is the complement to <code>ROL</code>. <code>ROR</code> shifts the bits to the right. But instead of discarding the lowest bit, it copies the lowest bit into both the carry flag <strong>and</strong> the highest bit position.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb6-1" data-line-number="1">   <span class="bu">mov</span> <span class="kw">al</span><span class="bn">, 000000010b</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">   <span class="bu">ror</span> <span class="kw">al</span>, <span class="dv">2</span>             <span class="co">; AL = 10000000b, CF = 1</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">   <span class="bu">ror</span> <span class="kw">al</span>, <span class="dv">1</span>             <span class="co">; AL = 01000000b, CF = 0</span></a></code></pre></div>
+<h4 id="rcl-rotate-carry-left">RCL (Rotate Carry Left)</h4>
+<p><code>RCL</code> shifts each bit to the left, copies the carry flag into the lowest bit, and copies the highest bit into the carry flag.</p>
+<p>You can think of this instruction as adding an additional high bit where the highest bit is now the carry flag. The carry flag is now your most signficiant bit (MSB), and you’re now preforming a rotate left shift on this value with the carry flag as your MSB.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb7-1" data-line-number="1">    <span class="bu">mov</span><span class="bn"> ah, 010000001b </span><span class="co">; AH = 010000001b, CF = 0</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">    <span class="bu">stc</span>                <span class="co">; AH = 010000001b, CF = 1</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="bu">rcl</span><span class="bn"> ah, </span><span class="dv">1</span>          <span class="co">; AH = 000000011b, CF = 1</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">    <span class="bu">rcl</span><span class="bn"> ah, </span><span class="dv">1</span>          <span class="co">; AH = 000000111b, CF = 0</span></a></code></pre></div>
+<h4 id="rcr-rotate-carry-right">RCR (Rotate Carry Right)</h4>
+<p><code>RCR</code> is the complment to <code>RCL</code>, but it goes in the opposite direction. It shifts each bit to the right, copies the carry flag into the highest bit, and copies the lowest bit into the carry flag.</p>
+<p>Similar to <code>RCL</code>, you can also think this as adding an additional bit to your value where the lowest bit is now the carry flag. The carry flag is now your least significant bit (LSB), and you’re now preforming a rotate right shift on this value with the carry flag as the LSB.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb8-1" data-line-number="1">    <span class="bu">mov</span><span class="bn"> ah, 000000010h    </span><span class="co">; AH = 000000010h, CF = 0</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">    <span class="bu">stc</span>                   <span class="co">; AH = 000000010h, CF = 1</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">    <span class="bu">rcr</span><span class="bn"> ah, </span><span class="dv">2</span>             <span class="co">; AH = 001000001h, CF = 0</span></a></code></pre></div>
+<hr />
+<h3 id="double-shifts">Double Shifts</h3>
+<h4 id="shld-shift-left-double">SHLD (Shift Left Double)</h4>
+<p>This instruction takes three operands: the first is the <em>destination</em> operand, the second is the <em>source</em> operand, the third is the <em>amount</em> of shifts.</p>
+<p><code>SHLD</code> shifts the destination operand <em>n</em> amount of times to the left (where <em>n</em> is the <em>amount</em> specified as the third operand). The positions opened up by the bits shifted to the left are then filled in with the highest bits from the source operand.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb9-1" data-line-number="1">    <span class="bu">mov</span> <span class="kw">ax</span><span class="bn">, 000000001b</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">    <span class="bu">mov</span> <span class="kw">bx</span><span class="bn">, 010000000b</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">    <span class="bu">shld</span> <span class="kw">ax</span>, <span class="kw">bx</span>, <span class="dv">1</span>        <span class="co">; AX = 000000011, BX = 010000000b</span></a></code></pre></div>
+<p>It’s important to note that with the <code>SHLD</code> instruction, the <em>source</em> operand is not affected.</p>
+<h4 id="shrd-shift-right-double">SHRD (Shift Right Double)</h4>
+<p><code>SHRD</code> is the complement to <code>SHLD</code>. It does the same thing, but to the right. <code>SHRD</code> shifts the destination operand <em>n</em> amount of times to the right (where <em>n</em> is the <em>amount</em> specified as the third operand). The positions opened up by the bits shifted to the right are then filled in with the lowest bits from the source operand. Again, the <em>source</em> operand is not affected.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode asm"><code class="sourceCode fasm"><a class="sourceLine" id="cb10-1" data-line-number="1">    <span class="bu">mov</span> <span class="kw">ax</span><span class="bn">, 000000001b</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">    <span class="bu">mov</span> <span class="kw">bx</span><span class="bn">, 010000000b</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">    <span class="bu">shrd</span> <span class="kw">bx</span>, <span class="kw">ax</span>, <span class="dv">1</span>        <span class="co">; AX = 000000001b, BX = 011000000b</span></a></code></pre></div>
+<hr />
+<h3 id="summary">Summary</h3>
+<p>That’s it. All these shifts do something slightly diferent, and depending on what you’re doing, they may save you a few instructions! Of course this isn’t the 60s where writing the tightest assembler code is crucial, but being able to use the right tool for the right task is important. When all you know is <code>ROR</code>, then every <code>shl al, 1</code> looks like <code>ror al, 7</code>.</p>
+<p><br></p>
+<table>
+<thead>
+<tr class="header">
+<th>Instruction</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SHL</td>
+<td>Shift Left</td>
+</tr>
+<tr class="even">
+<td>SHR</td>
+<td>Shift Right</td>
+</tr>
+<tr class="odd">
+<td>SAL</td>
+<td><del>Shift Left</del> Shift Arithmetic Left</td>
+</tr>
+<tr class="even">
+<td>SAR</td>
+<td>Shift Arithmetic Right</td>
+</tr>
+<tr class="odd">
+<td>ROL</td>
+<td>Rotate Left</td>
+</tr>
+<tr class="even">
+<td>ROR</td>
+<td>Rotate Right</td>
+</tr>
+<tr class="odd">
+<td>RCL</td>
+<td>Rotate Carry Left</td>
+</tr>
+<tr class="even">
+<td>RCR</td>
+<td>Rotate Carry Right</td>
+</tr>
+<tr class="odd">
+<td>SHLD</td>
+<td>Shift Left Double</td>
+</tr>
+<tr class="even">
+<td>SHRD</td>
+<td>Shift Right Double</td>
+</tr>
+</tbody>
+</table>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>. 
+            You can view the code for this site <a href="https://github.com/rstefanic/rstefanic.github.io/tree/hakyll" target="_blank">here</a>.
+        </footer>
+    </body>
+</html>
