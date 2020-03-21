@@ -90,7 +90,7 @@
 <a class="sourceLine" id="cb8-2" data-line-number="2">    <span class="bu">stc</span>                   <span class="co">; AH = 000000010h, CF = 1</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">    <span class="bu">rcr</span><span class="bn"> ah, </span><span class="dv">2</span>             <span class="co">; AH = 001000001h, CF = 0</span></a></code></pre></div>
 <hr />
-<h3 id="double-shifts">Double Shifts</h3>
+<h3 id="the-double-shifts">The Double Shifts</h3>
 <h4 id="shld-shift-left-double">SHLD (Shift Left Double)</h4>
 <p>This instruction takes three operands: the first is the <em>destination</em> operand, the second is the <em>source</em> operand, the third is the <em>amount</em> of shifts.</p>
 <p><code>SHLD</code> shifts the destination operand <em>n</em> amount of times to the left (where <em>n</em> is the <em>amount</em> specified as the third operand). The positions opened up by the bits shifted to the left are then filled in with the highest bits from the source operand.</p>
