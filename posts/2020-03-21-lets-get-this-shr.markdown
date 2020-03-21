@@ -119,7 +119,7 @@ Similar to ```RCL```, you can also think this as adding an additional bit to you
 
 * * *
 
-### Double Shifts
+### The Double Shifts
 
 #### SHLD (Shift Left Double)
 
