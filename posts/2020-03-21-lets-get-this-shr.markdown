@@ -149,7 +149,7 @@ It's important to note that with the ```SHLD```  instruction, the *source* opera
 
 ### Summary
 
-That's it. All these shifts do something slightly diferent, and depending on what you're doing, they may save you a few instructions! Of course this isn't the 60s where writing the tightest assembler code is crucial, but being able to use the right tool for the right task is important. When all you know is ```ROR```, then every ```shl al, 1``` looks like ```ror al, 7```.
+That's it. All these shifts do something slightly different, and depending on what you're doing, they may save you a few instructions! Of course this isn't the 60s where writing the tightest assembler code is crucial, but being able to use the right tool for the right task is important. When all you know is ```ROR```, then every ```shl al, 1``` looks like ```ror al, 7```.
 
 <br>
 
