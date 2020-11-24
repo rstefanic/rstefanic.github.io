@@ -1,1 +1,13 @@
-theme: jekyll-theme-hacker
+title: Robert Stefanic
+email: rstefanic72@gmail.com
+description: >- # this means to ignore newlines until "baseurl:"
+  I'm a programmer who's always curious. I enjoy writing about computers if I feel like I have something that's worth sharing.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://robertstefanic.com" # the base hostname & protocol for your site, e.g. http://example.com
+github_username:  rstefanic
+
+# Build settings
+theme: minima
+markdown: kramdown
+plugins:
+  - jekyll-feed
